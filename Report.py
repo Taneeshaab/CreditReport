@@ -320,7 +320,8 @@ def generate_pdf_report(yearwise_stats, output_path, participation_chart_paths):
 
 # Define the folder path
 # folder_path = os.getcwd()
-folder_path = os.path.join(os.getcwd(), "uploads")
+# folder_path = os.path.join(os.getcwd(), "uploads")
+folder_path = "/tmp/uploads"
 
 # Get all .xls and .xlsx files
 excel_files = glob.glob(os.path.join(folder_path, "*.xls*"))
