@@ -18,6 +18,7 @@ from reportlab.lib.pagesizes import letter
 # Ensure output directory exists
 os.makedirs("reports", exist_ok=True)
 
+
 # Load and clean data from Excel file
 def load_and_clean_data(file_path, year):
     df = pd.read_excel(file_path)
@@ -53,6 +54,7 @@ def load_and_clean_data(file_path, year):
     df["Year"] = year
     return df
 
+
 # Process credit data
 def process_credit_data(df):
     yearwise_stats = {}
@@ -83,6 +85,7 @@ def process_credit_data(df):
 
     return yearwise_stats
 
+
 # Generate pie charts
 def generate_pie_charts(yearwise_stats):
     pie_chart_paths = {}
@@ -102,6 +105,7 @@ def generate_pie_charts(yearwise_stats):
         pie_chart_paths[year] = chart_path
 
     return pie_chart_paths
+
 
 # Generate bar charts
 def generate_bar_charts(yearwise_stats):
@@ -125,6 +129,7 @@ def generate_bar_charts(yearwise_stats):
 
     return bar_chart_paths
 
+
 # Generate line graph
 def generate_line_graph(yearwise_stats):
     years = list(yearwise_stats.keys())
@@ -143,10 +148,12 @@ def generate_line_graph(yearwise_stats):
 
     return chart_path
 
+
 def extract_credits(column_name):
     """Extract numerical credits from column names, default to 1 if not found."""
     match = re.search(r'(\d+)\s*[Cc]redits?', column_name)
     return int(match.group(1)) if match else 1  # Default to 1 credit
+
 
 def generate_participation_chart(file_paths, years, output_dir="reports", max_bars_per_chart=20):
     """Generates uniform-sized volunteer participation charts for multiple years and saves them."""
@@ -169,7 +176,7 @@ def generate_participation_chart(file_paths, years, output_dir="reports", max_ba
         for col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
             total_participants = (df[col] > 0).sum()
-            if total_participants >=0:
+            if total_participants >= 0:
                 participation_data.append((col, total_participants))
 
         # Convert to DataFrame
@@ -225,6 +232,7 @@ def generate_participation_chart(file_paths, years, output_dir="reports", max_ba
 
     return participation_chart_paths
 
+
 def generate_pdf_report(yearwise_stats, output_path, participation_chart_paths):
     doc = SimpleDocTemplate(output_path, pagesize=letter, title="Credit Report")
     styles = getSampleStyleSheet()
@@ -267,33 +275,41 @@ def generate_pdf_report(yearwise_stats, output_path, participation_chart_paths):
 
         elements.append(KeepTogether([year_heading, Spacer(1, 6), table]))
         elements.append(Spacer(1, 12))
-        elements.append(Paragraph(f"<i>The above table shows the Summary of the Performance Indicators</i>", styles["Normal"]))
+        elements.append(
+            Paragraph(f"<i>The above table shows the Summary of the Performance Indicators</i>", styles["Normal"]))
     # Generate Charts
     pie_chart_paths = generate_pie_charts(yearwise_stats)
     bar_chart_paths = generate_bar_charts(yearwise_stats)
     line_graph_path = generate_line_graph(yearwise_stats)
 
-        # Add Charts to PDF
+    # Add Charts to PDF
     for year in yearwise_stats:
         title = Paragraph(f"<b>Volunteer Statistics ({year})</b>", styles["Heading2"])
-        pie_Comment = Paragraph(f"<i>Above graph shows Volunteer Pass Distribution.  Volunteers who have scored >= 55 Credits are considered as Passed</i>", styles["Normal"])
-        bar_Comment = Paragraph(f"<i>Above graph shows Volunteer active participation.  Active Volunteers have 10 to 39 credits while inactive volunteers have < 10 credits</i>", styles["Normal"])
+        pie_Comment = Paragraph(
+            f"<i>Above graph shows Volunteer Pass Distribution.  Volunteers who have scored >= 55 Credits are considered as Passed</i>",
+            styles["Normal"])
+        bar_Comment = Paragraph(
+            f"<i>Above graph shows Volunteer active participation.  Active Volunteers have 10 to 39 credits while inactive volunteers have < 10 credits</i>",
+            styles["Normal"])
         pie_chart = Image(pie_chart_paths[year], width=280, height=280)
         bar_chart = Image(bar_chart_paths[year], width=280, height=280)
 
-            # Keep title and pie chart together
+        # Keep title and pie chart together
         elements.append(KeepTogether([title, pie_chart, pie_Comment, bar_chart, bar_Comment]))
         elements.append(Spacer(1, 3))  # Minimal extra spacing
     if len(years) > 1:
         elements.append(Paragraph("<b>Pass Rate of Volunteers Over Years</b>", styles["Heading2"]))
         elements.append(Image(line_graph_path, width=600, height=300))
-        elements.append(Paragraph(f"<i>Above graph shows Volunteer Pass Rate trend over Years (Volunteers with Credits >= 55) </i>", styles["Normal"]))
+        elements.append(
+            Paragraph(f"<i>Above graph shows Volunteer Pass Rate trend over Years (Volunteers with Credits >= 55) </i>",
+                      styles["Normal"]))
         elements.append(Spacer(1, 20))
     # Add Participation Charts to PDF
     for year in participation_chart_paths.keys():
         chart_title = Paragraph(f"<b>Volunteer Participation in Projects and Events ({year})</b>", styles["Heading2"])
         chart_image = Image(participation_chart_paths[year], width=500, height=300)  # Adjust size as needed
-        chart_Comment = Paragraph(f"<i> Above graph shows participation Trends for Volunteers across Events & Projects</i>", styles["Normal"])
+        chart_Comment = Paragraph(
+            f"<i> Above graph shows participation Trends for Volunteers across Events & Projects</i>", styles["Normal"])
 
         # Group title and chart together to prevent splitting across pages
         elements.append(KeepTogether([chart_title, Spacer(1, 12), chart_image, chart_Comment]))
@@ -301,8 +317,10 @@ def generate_pdf_report(yearwise_stats, output_path, participation_chart_paths):
 
     doc.build(elements)
 
+
 # Define the folder path
-folder_path = os.getcwd()
+# folder_path = os.getcwd()
+folder_path = os.path.join(os.getcwd(), "uploads")
 
 # Get all .xls and .xlsx files
 excel_files = glob.glob(os.path.join(folder_path, "*.xls*"))
@@ -342,7 +360,7 @@ try:
     ARCHIVE_FOLDER = os.path.join(os.getcwd(), 'archive')
     os.makedirs(ARCHIVE_FOLDER, exist_ok=True)
 
-     # Move files to the archive after generating the PDF
+    # Move files to the archive after generating the PDF
     for file_path in glob.glob(os.path.join(os.getcwd(), '*.xls*')):
         shutil.move(file_path, os.path.join(ARCHIVE_FOLDER, os.path.basename(file_path)))
     print("Files moved to archive successfully!")

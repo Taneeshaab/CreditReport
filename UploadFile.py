@@ -6,8 +6,12 @@ import glob
 import subprocess
 
 app = Flask(__name__)
-UPLOAD_FOLDER = os.getcwd()
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+#UPLOAD_FOLDER = os.getcwd()
+#os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the folder exists
+
+
 
 
 @app.route('/')
