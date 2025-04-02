@@ -9,9 +9,9 @@ app = Flask(__name__)
 #UPLOAD_FOLDER = os.getcwd()
 #os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 #UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
-#os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the folder exists
-UPLOAD_FOLDER = "/tmp/uploads"
 
+UPLOAD_FOLDER = "/tmp/uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the folder exists
 
 
 
@@ -103,7 +103,8 @@ def upload_file():
             uploaded_files.append(file.filename)
 	
     # Convert list of file names into a string message
-    print (UPLOAD_FOLDER)
+    print(f"Saving file to: {UPLOAD_FOLDER}")  # DEBUG: Print path
+
     message = f"Files uploaded successfully: {', '.join(uploaded_files)}"
 
     return redirect(url_for('upload_form', message=message, message_class='success'))
