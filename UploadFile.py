@@ -95,8 +95,9 @@ def upload_file():
             file_path = os.path.join(UPLOAD_FOLDER, file.filename)
             file.save(file_path)
             uploaded_files.append(file.filename)
-
+	
     # Convert list of file names into a string message
+    print UPLOAD_FOLDER
     message = f"Files uploaded successfully: {', '.join(uploaded_files)}"
 
     return redirect(url_for('upload_form', message=message, message_class='success'))
