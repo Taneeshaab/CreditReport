@@ -365,13 +365,21 @@ output_pdf_path = "credit_report.pdf"
 try:
     generate_pdf_report(yearwise_stats, output_pdf_path, participation_chart_paths)
     print(f"✅ Report successfully generated: {output_pdf_path}")
+    folder_path = "/tmp/uploads"
+    # Delete all uploaded files after processing
+    try:
+        shutil.rmtree(folder_path)  # Deletes the entire folder
+        os.makedirs(folder_path)  # Recreate the empty folder
+        print("All files deleted from /tmp/uploads/")
+    except Exception as e:
+        print(f"Error deleting folder: {e}")
     # Define the folders
-    ARCHIVE_FOLDER = os.path.join(os.getcwd(), 'archive')
-    os.makedirs(ARCHIVE_FOLDER, exist_ok=True)
+    #ARCHIVE_FOLDER = os.path.join(os.getcwd(), 'archive')
+    #os.makedirs(ARCHIVE_FOLDER, exist_ok=True)
 
     # Move files to the archive after generating the PDF
-    for file_path in glob.glob(os.path.join(os.getcwd(), '*.xls*')):
-        shutil.move(file_path, os.path.join(ARCHIVE_FOLDER, os.path.basename(file_path)))
-    print("Files moved to archive successfully!")
-except Exception as e:
-    print(f"❌ Error: {e}")
+    #for file_path in glob.glob(os.path.join(os.getcwd(), '*.xls*')):
+    #    shutil.move(file_path, os.path.join(ARCHIVE_FOLDER, os.path.basename(file_path)))
+    #print("Files moved to archive successfully!")
+#except Exception as e:
+ #   print(f"❌ Error: {e}")
