@@ -21,6 +21,7 @@ os.makedirs("reports", exist_ok=True)
 
 # Load and clean data from Excel file
 def load_and_clean_data(file_path, year):
+    file_path = os.path.join("/tmp/uploads", file_path)
     df = pd.read_excel(file_path)
     df.columns = df.columns.str.strip().str.lower()
 
@@ -328,6 +329,7 @@ excel_files = glob.glob(os.path.join(folder_path, "*.xls*"))
 
 # Extract and print file names only (without the full path)
 file_paths = [os.path.basename(file) for file in excel_files]
+
 
 print("Excel Files Found:", file_paths)
 
