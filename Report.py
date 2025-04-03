@@ -162,9 +162,12 @@ def generate_participation_chart(file_paths, years, output_dir="reports", max_ba
         os.makedirs(output_dir)
 
     participation_chart_paths = {}
+    print("Files in /tmp/uploads:", os.listdir("/tmp/uploads"))
 
     for file_path, year in zip(file_paths, years):
-        df = pd.read_excel(file_path)
+            full_path = os.path.join("/tmp/uploads", file_path)  # Fix here
+            print(f"Reading file: {full_path}")  # Debugging statement
+        df = pd.read_excel(full_path)
 
         # Drop unnecessary metadata columns
         metadata_columns = ["S.No", "s. no", "Name", "Roll No", "Smail", "Total Credits Earned",
