@@ -381,5 +381,5 @@ try:
     #for file_path in glob.glob(os.path.join(os.getcwd(), '*.xls*')):
     #    shutil.move(file_path, os.path.join(ARCHIVE_FOLDER, os.path.basename(file_path)))
     #print("Files moved to archive successfully!")
-#except Exception as e:
- #   print(f"❌ Error: {e}")
+except Exception as e:
+   print(f"❌ Error: {e}")
