@@ -165,12 +165,12 @@ def generate_participation_chart(file_paths, years, output_dir="reports", max_ba
     print("Files in /tmp/uploads:", os.listdir("/tmp/uploads"))
 
     for file_path, year in zip(file_paths, years):
-            full_path = os.path.join("/tmp/uploads", file_path)  # Fix here
-            print(f"Reading file: {full_path}")  # Debugging statement
-            if not os.path.exists(full_path):  # Check if file exists
-                print(f"Error: File not found - {full_path}")
-                continue  # Skip if file is missing
-            df = pd.read_excel(full_path)
+        full_path = os.path.join("/tmp/uploads", file_path)  # Fix here
+        print(f"Reading file: {full_path}")  # Debugging statement
+        if not os.path.exists(full_path):  # Check if file exists
+            print(f"Error: File not found - {full_path}")
+            continue  # Skip if file is missing
+        df = pd.read_excel(full_path)
 
         # Drop unnecessary metadata columns
         metadata_columns = ["S.No", "s. no", "Name", "Roll No", "Smail", "Total Credits Earned",
